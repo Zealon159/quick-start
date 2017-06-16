@@ -1,7 +1,5 @@
 package zealon.redis;
 
-import java.time.format.DateTimeFormatter;
-
 import redis.clients.jedis.Jedis;
 
 public class CacheData {
