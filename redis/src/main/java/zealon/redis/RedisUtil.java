@@ -19,7 +19,7 @@ public class RedisUtil {
 	protected static Logger logger = Logger.getLogger(RedisUtil.class);
 	
 	//Redis服务器IP
-    private static String ADDR_ARRAY = "192.168.2.163";
+    private static String ADDR_ARRAY = "127.0.0.1";
     
     //Redis的端口号
     private static int PORT = 6379;

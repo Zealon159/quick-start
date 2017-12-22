@@ -20,6 +20,7 @@ public class CacheData {
 	 */
 	public static String getCacheJson(String key){
 		String keyJson = RedisUtil.getString(key);
+		
 		if(keyJson==null){
 			System.out.println("关系数据库获取数据，缓存到redis");
 			keyJson = "{\"menus_"+key+"\":\"[{\"menuName\":\"百度\",\"menuURI\":\"http://www.baidu.com\"},{\"menuName\":\"新浪\",\"menuURI\":\"http://www.sina.com\"}]\"}";

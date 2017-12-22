@@ -20,9 +20,10 @@ public class App
     public static void main( String[] args ){
     	jedis = RedisUtil.getJedis();
     	Set<String> keys = jedis.keys("*");
-        for(String key : keys){
-       		System.out.println(key+":"+jedis.get(key));
-        }
+    
+//        for(String key : keys){
+//       		System.out.println(key+":"+jedis.get(key));
+//        }
     	
 //    	setUpBeforeClass();
 //        //jedis.set("name", "hhh");
