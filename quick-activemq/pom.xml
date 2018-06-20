@@ -40,8 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-jms-pool</artifactId>
-            <version>5.14.5</version>
+            <artifactId>activemq-pool</artifactId>
         </dependency>
 
         <dependency>
