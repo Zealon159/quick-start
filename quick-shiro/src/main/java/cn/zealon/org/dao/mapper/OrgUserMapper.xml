@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zealon.org.dao.OrgUserMapper">
+  <resultMap id="BaseResultMap" type="com.zealon.org.entity.OrgUser">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="Userid" jdbcType="VARCHAR" property="userid" />
+    <result column="User_Pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="User_Name" jdbcType="VARCHAR" property="userName" />
+    <result column="Phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="Email_address" jdbcType="VARCHAR" property="emailAddress" />
+    <result column="Enabled_state" jdbcType="BIT" property="enabledState" />
+    <result column="Sort_number" jdbcType="INTEGER" property="sortNumber" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+  </resultMap>
+  
+  <insert id="insert" parameterType="com.corpdata.biz.org.entity.OrgUser">
+    insert into org_user (id, Userid, User_Pwd, 
+      User_Name, Phone_number, Email_address, 
+      Enabled_state, Sort_number, creater, 
+      created, modified)
+    values (#{id,jdbcType=CHAR}, #{userid,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, #{emailAddress,jdbcType=VARCHAR}, 
+      #{enabledState,jdbcType=BIT}, #{sortNumber,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, 
+      #{created,jdbcType=TIMESTAMP}, #{modified,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from org_user where userId = #{userId,jdbcType=CHAR}
+  </select>
+</mapper>
