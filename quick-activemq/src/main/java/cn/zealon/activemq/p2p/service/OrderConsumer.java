@@ -11,7 +11,7 @@ import javax.jms.TextMessage;
  * 订单消费服务
  */
 @Component
-public class OrderConsumerService {
+public class OrderConsumer {
 
     @JmsListener(destination = "order.queue",containerFactory = "myFactory")
     public void receiveQueue(final TextMessage message, Session session) throws JMSException {

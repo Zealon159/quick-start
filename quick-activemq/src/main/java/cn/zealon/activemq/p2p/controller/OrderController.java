@@ -1,6 +1,5 @@
 package cn.zealon.activemq.p2p.controller;
 
-import cn.zealon.activemq.p2p.service.OrderConsumerService;
 import cn.zealon.activemq.p2p.service.OrderProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

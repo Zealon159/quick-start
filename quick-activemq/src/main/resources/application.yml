@@ -5,11 +5,3 @@ spring:
     #mq账户密码
     user: admin
     password: pass123
-
-    #mq连接池
-    pool:
-      enabled: true
-      max-connections: 10
-  jms:
-    listener:
-      acknowledge-mode: CLIENT

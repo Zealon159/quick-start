@@ -1,16 +1,15 @@
 package cn.zealon.activemq.config;
 
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
-import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
-import org.springframework.jms.support.converter.MessageConverter;
-import org.springframework.jms.support.converter.MessageType;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.Topic;
 
 /**
  * ActiveMQ 配置
@@ -23,6 +22,11 @@ public class ActiveMQConfig {
 
     // 参考 https://blog.csdn.net/zhaoyachao123/article/details/78365003
 
+    @Bean
+    public Topic topic(){
+        return new ActiveMQTopic("order.topic");
+    }
+
     //消息监听器连接工厂
     @Bean
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
@@ -32,15 +36,29 @@ public class ActiveMQConfig {
 
         //JMS监听者并发线程数范围
         factory.setConcurrency("1-10");
-
         //重连间隔时间
         factory.setRecoveryInterval(1000L);
-
         //应答模式
         factory.setSessionAcknowledgeMode(2);
 
         configurer.configure(factory, connectionFactory);
         // You could still override some of Boot's default if necessary.
+        return factory;
+    }
+
+    //订阅监听器连接工厂
+    @Bean
+    public JmsListenerContainerFactory<?> topicFactory(ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+
+        //JMS监听者并发线程数范围
+        factory.setConcurrency("1-10");
+        //重连间隔时间
+        factory.setRecoveryInterval(1000L);
+        //支持发布/订阅
+        factory.setPubSubDomain(true);
+
+        factory.setConnectionFactory(connectionFactory);
         return factory;
     }
 
