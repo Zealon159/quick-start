@@ -1,0 +1,49 @@
+server:
+  port: 8080
+
+spring:
+  #---- thymeleaf 配置  ----#
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    mode: LEGACYHTML5
+  #---- 默认数据源  ----#
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.188:3306/biz_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: pass123
+
+  #---- redis设置   ----#
+  redis:
+    database: 0
+    host: 192.168.1.188
+    port: 6379
+    password:
+    # 连接超时时间 单位 ms（毫秒）
+    timeout: 0
+    # 连接池中的最大空闲连接，默认值也是8。
+    pool:
+      max-idle: 50
+      #连接池中的最小空闲连接，默认值也是0。
+      min-idle: 5
+      # 如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。
+      max-active: 200
+      # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException
+      max-wait: 1000
+
+
+## Mybatis
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  type-aliases-package: cn.zealon.app.*.entity
+
+## 分页配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

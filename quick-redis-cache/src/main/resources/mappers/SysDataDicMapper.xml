@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zealon.app.dao.SysDataDicMapper">
+  <resultMap id="BaseResultMap" type="cn.zealon.app.entity.SysDataDic">
+    <id column="id" jdbcType="CHAR" property="id" />
+    <result column="Dic_Name" jdbcType="VARCHAR" property="dicName" />
+    <result column="Sort_Number" jdbcType="INTEGER" property="sortNumber" />
+    <result column="Dic_type" jdbcType="VARCHAR" property="dicType" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="modified" jdbcType="TIMESTAMP" property="modified" />
+    <result column="Type_Name" jdbcType="TIMESTAMP" property="typeName" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_data_dic
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+
+  <insert id="insert" parameterType="cn.zealon.app.entity.SysDataDic">
+    insert into sys_data_dic (id, Dic_Name, Sort_Number, 
+      Dic_type, creater, created, 
+      modified)
+    values (#{id,jdbcType=CHAR}, #{dicName,jdbcType=VARCHAR}, #{sortNumber,jdbcType=INTEGER}, 
+      #{dicType,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{modified,jdbcType=TIMESTAMP})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="cn.zealon.app.entity.SysDataDic">
+    update sys_data_dic
+    set Dic_Name = #{dicName,jdbcType=VARCHAR},
+      Sort_Number = #{sortNumber,jdbcType=INTEGER},
+      Dic_type = #{dicType,jdbcType=VARCHAR},
+      modified = #{modified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, Dic_Name, Sort_Number, Dic_type, creater, created, modified
+    from sys_data_dic
+    where id = #{id,jdbcType=CHAR}
+  </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+        select
+        dic.id, dic.Dic_Name, dic.Sort_Number, dic.Dic_type,
+        dic.creater, dic.created, dic.modified,
+        type.Type_Name
+        from sys_data_dic dic
+        LEFT JOIN sys_dic_type type on dic.Dic_type = type.Type_code
+        where 1=1
+        <if test="searchStr != null">
+            and (dic.id = '${searchStr}' or dic.dic_name like '%${searchStr}%')
+        </if>
+        <if test="dictype != null">
+            and dic.Dic_type = '${dictype}'
+        </if>
+        order by dic.Dic_type asc,dic.Sort_Number asc
+    </select>
+
+  <select id="selectAllByCondition" resultMap="BaseResultMap">
+    select 
+    	dic.id, dic.Dic_Name, dic.Sort_Number, dic.Dic_type, 
+    	dic.creater, dic.created, dic.modified, 
+    	type.Type_Name
+    from sys_data_dic dic
+		LEFT JOIN sys_dic_type type on dic.Dic_type = type.Type_code
+    where 1=1
+	<if test="searchStr != null">
+		and (dic.id = #{searchStr} or dic.dic_name like concat(concat('%',#{searchStr}),'%')) 
+	</if>
+	<if test="dictype != null">
+		and dic.Dic_type = #{dictype}
+	</if>
+	order by dic.Dic_type asc,dic.Sort_Number asc
+  </select>
+
+  <select id="selectAllByCombox" resultType="map">
+    select id, dic_name text from sys_data_dic order by sort_number
+  </select>
+
+  <select id="selectAllByComboxByCode" resultType="map" parameterType="java.lang.String">
+    select id, dic_name text from sys_data_dic where dic_type = #{code} order by sort_number
+  </select>
+
+  <select id="findAllCode" parameterType="String" resultMap="BaseResultMap">
+		select id, Dic_Name, Sort_Number, Dic_type, creater, created, modified
+		from sys_data_dic 
+		where Dic_type=#{typeid}
+  </select>
+
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.corpdata.system.dic.dao.SysDicTypeMapper" >
+  <resultMap id="BaseResultMap" type="cn.zealon.app.entity.SysDicType" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="Type_Name" property="typeName" jdbcType="VARCHAR" />
+    <result column="Type_code" property="typeCode" jdbcType="VARCHAR" />
+    <result column="Sort_Number" property="sortNumber" jdbcType="INTEGER" />
+    <result column="group_id" property="groupId" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, Type_Name, Type_code, Sort_Number, group_id, group_name, creater, created, modified
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dic_type
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_dic_type
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.zealon.app.entity.SysDicType" >
+    insert into sys_dic_type (id, Type_Name, Type_code, 
+      Sort_Number, creater, created, 
+      modified)
+    values (#{id,jdbcType=CHAR}, #{typeName,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, 
+      #{sortNumber,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{modified,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.zealon.app.entity.SysDicType" >
+    update sys_dic_type
+    set Type_Name = #{typeName,jdbcType=VARCHAR},
+      Type_code = #{typeCode,jdbcType=VARCHAR},
+      Sort_Number = #{sortNumber,jdbcType=INTEGER},
+      creater = #{creater,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dic_type
+  </select>
+  <select id="selectAllByCondition" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dic_type
+    where 1 = 1
+    <if test="groupId != null">
+		and group_id = '${groupId}'
+	</if>
+    order by sort_number
+  </select>
+  <select id="selectAllByCombox" resultType="map">
+    select type_code id, type_name text from sys_dic_type order by sort_number
+  </select>
+</mapper>
