@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>datagrid</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //初始化表头
+            $("#dg").datagrid({
+                method:'post',
+                url:"/listdata",
+                singleSelect:true,
+                pagination:true,
+                pageSize:25,
+                height:'auto',
+                pageList:[15,25,50,100,200,500],
+                striped:true,
+                fitColumns:true,
+                allowCellWrap:true,
+                nowrap:false,
+                remoteSort: true,
+                columns:[[
+                    {field:'id',hidden:true},
+                    {field:'cb',checkbox:true},
+                    {field:'userId',title:'userId',width:70},
+                    {field:'userName',title:'用户名',width:80},
+                    {field:'phoneNumber',title:'phone',width:90},
+                    {field:'emailAddress',title:'e-mail',width:90},
+                    {field:'created',title:'created',width:100,align:'center',halign:'center'},
+                    {field:'examineStatus',title:'操作',formatter:fmtAction,width:120,align:'center',halign:'center'}
+
+                ]],
+                onLoadSuccess: function (data) {
+
+                }
+
+            });
+
+        });
+
+        //格式化列
+        function fmtAction(v,r) {
+            var editBtn = "<a href=javascript:alert('编辑"+r.id+"') >Edit</a>";
+            var deleteBtn = "<a href=javascript:alert('删除"+r.id+"') >Delete</a>";
+            return editBtn+" | "+deleteBtn;
+        }
+
+        //获取选中行
+        function getCheckRecord() {
+            var ids = "";
+            var dg=$("#dg");
+            var rows = dg.datagrid('getSelections');
+            if (rows.length<1){
+                alert("请您至少选择一个文件!");
+                return false;
+            }
+
+            $.each(rows, function (i, row){
+                if(ids==""){
+                    ids=row.userId;
+                }else{
+                    ids+=","+row.userId;
+                }
+            });
+            alert(ids);
+        }
+
+        //获取表格所有值
+        function getAllValue(){
+            var rows = $("#dg").datagrid('getRows');
+            var arrayObj = new Array();
+            $.each(rows, function (i, row) {
+                var val=eval("row.userId"); //列名称
+                arrayObj.push(val);
+            });
+
+            alert(arrayObj);
+        }
+
+    </script>
+</head>
+<body>
+    <div style="padding: 10px">
+        <a href="#" class="easyui-linkbutton" onclick="getCheckRecord();return false;">获取选中userId</a>
+        <a href="#" class="easyui-linkbutton" onclick="getAllValue();return false;">获取所有userId</a>
+    </div>
+    <table id="dg" style="width:100%" ></table>
+
+</body>
+</html>

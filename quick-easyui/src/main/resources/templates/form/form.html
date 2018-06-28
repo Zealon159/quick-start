@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单用例</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var url = "";
+            $('#cc').combobox({
+                url:url,
+                valueField:'id',
+                textField:'text',
+                onSelect:function (newVal){
+                    //绑定选择事件
+                    alert("您已选择："+newVal);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>绑定数据</h2>
+    <div style="margin:20px 0"></div>
+    <select id="cc" style="width:150px"></select>
+
+    <h2>绑定数据</h2>
+    <div style="margin:20px 0"></div>
+    <select id="cc1" style="width:150px"></select>
+</body>
+</html>

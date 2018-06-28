@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tab-多开</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+        });
+
+        function extAll(){
+            $('#tree').tree('expandAll');
+        }
+
+
+        //右键菜单
+        function onContextMenu(e,node){
+            if("newDoc,searchDoc".indexOf(node.id)!=-1){
+                return false;
+            }
+            rightClick=true;
+            e.preventDefault();
+            if(node.id=="root"){
+                $(this).tree('select',node.target);
+                $('#treenewmm').menu('show',{left: e.pageX,top: e.pageY});
+            }else{
+                $(this).tree('select',node.target);
+                $('#treemm').menu('show',{left: e.pageX,top: e.pageY});
+            }
+        }
+
+        function newFolder(){
+            var node = $('#tree').tree('getSelected');
+            $('#win').window({width:750,height:480,modal:true,title:'新建分类'});
+            $('#win').html("<iframe height='440px' width='100%' frameborder='0' src='http://www.baidu.com&ParentFolderid="+node.id+"'></iframe>");
+        }
+
+        function removeFolder(){
+            var node = $('#tree').tree('getSelected');
+            var tipStr=node.text;
+            var tip=tipStr.substring(0,tipStr.indexOf("<",0));
+            var delmsg="您确认要删除\"{0}\"吗?删除后不可恢复!";
+            delmsg=delmsg.replace("{0}",tip);
+            if(!confirm(delmsg)){return false;}
+            $.post('rule?wf_num=R_ED_B002',{wf_docunid:node.WF_OrUnid},function(data){
+                data=eval('('+data+')');
+                alert(data.msg);
+                if(data.Status=="ok"){
+                    $('#tree').tree('reload');
+                }
+            });
+        }
+
+        function editFolder(){
+            var node = $('#tree').tree('getSelected');
+            $('#win').window({width:750,height:480,modal:true,title:'修改分类'});
+            var url="form?wf_num=F_ED_A003&wf_docunid="+node.WF_OrUnid+"&wf_action=edit";
+            $('#win').html("<iframe height='440px' width='100%' frameborder='0' src='"+url+"'></iframe>");
+        }
+
+        //树菜单点击事件
+        function openurl(node){
+            var text=node.text;
+            var url = "http://www.baidu.com?nodeid="+node.id;
+            //nodeid 专属按钮，需要指定url链接（根目录、新增纸质文档、查询文档）
+            if(node.id=="root"){
+                url = "javascript:alert('根目录啊')";
+            }else if(node.id=="newDoc"){
+                url = "http://www.baidu.com";
+            }else if(node.id=="searchDoc"){
+                url = "http://www.baidu.com";
+            }
+
+            var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+            $('#tabs').tabs('add',{
+                title:text,
+                content:content,
+                closable:true
+            });
+            /*
+            $("#tabs").tabs('select', 0);
+            var seltab = $('#tabs').tabs('getSelected');
+            $('#tabs').tabs('add', {tab: seltab,iconCls:'icon-save',options: {title:text}});
+            $("#centerFrame").attr("src",url);*/
+        }
+    </script>
+</head>
+<body>
+<div class="easyui-layout" id="panel" fit="true" style="width:100%;">
+
+
+    <div data-options="region:'west',split:true" title="" style="width:180px;">
+        <ul class="easyui-tree" id="tree" data-options="url:'/leftMenu',method:'get',animate:true,lines:true,onLoadSuccess:extAll,onClick:openurl,onContextMenu:onContextMenu" ></ul>
+        <div id="treemm" class="easyui-menu" style="width:120px;">
+            <div onclick="newFolder()"  data-options="iconCls:'icon-add'">新建分类</div>
+            <div onclick="editFolder()" id="editapp" data-options="iconCls:'icon-edit'">修改分类</div>
+            <div onclick="removeFolder()" id="delapp" data-options="iconCls:'icon-remove'">删除分类</div>
+        </div>
+        <div id="treenewmm" class="easyui-menu" style="width:120px;">
+            <div onclick="newFolder()"  data-options="iconCls:'icon-add'">新建分类</div>
+        </div>
+    </div>
+
+    <div region="center" border="true" fit="false" >
+        <div class="easyui-tabs" id="tabs" data-options="region:'center',fit:true,border:false,plain:true"  >
+            <div title="页面名称" style="padding:1px">
+                <iframe frameborder="0" width="100%" height="99%" id="centerFrame" scroll="no" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+</div><div id="win"></div>
+</body>
+</html>

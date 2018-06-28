@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>datebox</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            
+        });
+
+        //JS创建
+        function createDatebox() {
+            $('#dd1').datebox({
+                required:true
+            });
+        }
+
+        //取值
+        function getDateboxValue() {
+            var val = $("#dd").datebox("getValue");
+            alert(val);
+        }
+    </script>
+</head>
+<body>
+    <div style="margin:20px">
+        <h4>Datebox</h4>
+        <input id="dd" type="text" class="easyui-datebox" required="required">
+        <a href="#" class="easyui-linkbutton" onclick="getDateboxValue();return false;">获取值</a>
+    </div>
+
+    <div style="margin:20px">
+        <h4>JS创建</h4>
+        <input id="dd1" type="text" >
+        <a href="#" class="easyui-linkbutton" onclick="createDatebox();return false;">创建</a>
+    </div>
+</body>
+</html>

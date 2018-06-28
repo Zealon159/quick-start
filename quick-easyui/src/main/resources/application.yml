@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  ## thymeleaf 配置
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    mode: LEGACYHTML5
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/biz_db?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: pass123
+
+## Mybatis
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+
+
+## 分页配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Combox用例</title>
+        <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+
+                var url = "/combox/data";
+
+                //绑定数据
+                $('#cc').combobox({
+                    url:url,
+                    valueField:'id',
+                    textField:'text',
+                    onSelect:function (data){
+                        //级联绑定
+                        url = "/combox/datachild/"+data.id;
+                        $('#cc_child').combobox({
+                            url:url,
+                            valueField:'id',
+                            textField:'text',
+                            onLoadSuccess:function(data){
+                                $(this).combobox("select", data[0].id);
+                            },onSelect:function (data) {
+                                //绑定选择事件
+                                alert("您已选择：" + data.id);
+                            }
+                        });
+                    }
+                });
+
+                //绑定数据后(默认选中第一个值)
+                $('#cc1').combobox({
+                    url:url,
+                    valueField:'id',
+                    textField:'text',
+                    onLoadSuccess:function(data){
+                        $(this).combobox("select", data[0].id);
+                    }
+                });
+
+                //多选绑定数据
+                $('#cc2').combobox({
+                    url:url,
+                    valueField:'id',
+                    textField:'text'
+                });
+
+                //格式化绑定
+                $('#cc3').combobox({
+                    url:url,
+                    valueField:'id',
+                    textField:'text',
+                    formatter:function(row){
+                        var imageFile = '/img/fav.gif';
+                        return '<img class="item-img" src="'+imageFile+'"/><span class="item-text"> '+row.text+'</span>';
+                    }
+                });
+            });
+
+            //（多选）获取选中值
+            function getMultipleValue() {
+                var values = $("#cc2").combobox("getValues");
+                alert("已选:"+values);
+            }
+
+            //（多选）全选
+            function checkAllValue() {
+                var data = $('#cc2').combobox('getData');
+                var values = "";
+                for(i=0;i<data.length;i++){
+                    if(i>0) {
+                        values+=",";
+                    }
+                    values += data[i].id;
+                }
+                var valuesArray = values.split(",");
+                $('#cc2').combobox('setValues', valuesArray);
+            }
+
+            //（多选）清空
+            function clearMultipleValue() {
+                $("#cc2").combobox("setValues","");
+            }
+        </script>
+    </head>
+    <body>
+
+    <div style="margin:20px">
+        <h4>绑定数据</h4>
+        <select id="cc" style="width:150px"></select>
+        级联：<select class="easyui-combobox" id="cc_child" style="width:150px"></select>
+    </div>
+
+    <div style="margin:20px">
+        <h4>绑定数据(默认选中第一个值)</h4>
+        <select class="easyui-combobox" id="cc1" style="width:150px"></select>
+    </div>
+
+    <div style="margin:20px">
+        <h4>多选绑定数据</h4>
+        <select id="cc2" multiple="multiple" style="width:400px"></select>
+        <a href="#" class="easyui-linkbutton" onclick="getMultipleValue();return false;">获取选中值</a>
+        <a href="#" class="easyui-linkbutton" onclick="checkAllValue();return false;">全选</a>
+        <a href="#" class="easyui-linkbutton" onclick="clearMultipleValue();return false;">清空</a>
+    </div>
+
+    <div style="margin:20px">
+        <h4>绑定后格式化Text</h4>
+        <select class="easyui-combobox" id="cc3" style="width:150px"></select>
+    </div>
+    </body>
+</html>
