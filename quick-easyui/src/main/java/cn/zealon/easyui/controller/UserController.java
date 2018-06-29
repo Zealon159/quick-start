@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @ResponseBody
-    @PostMapping("listdata")
+    @RequestMapping("listdata")
     public String selectAll(int rows,int page){
         return userService.findByPage(page,rows);
     }
@@ -27,6 +27,11 @@ public class UserController {
     @GetMapping("datagrid")
     public String datagrid(){
         return "datagrid/datagrid";
+    }
+
+    @GetMapping("editorgrid")
+    public String editorgrid(){
+        return "datagrid/editorgrid";
     }
 
 }

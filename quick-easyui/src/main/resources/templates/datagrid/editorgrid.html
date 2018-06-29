@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editorgrid</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            var url = "/listdata";
+            $("#dg").datagrid({
+                method:'post',
+                url:url,
+                autoRowHeight:false,
+                fit:true,
+                remoteSort:true,
+                border:false,
+                pagination:true,
+                fitColumns:true,
+                singleSelect:false,
+                multiSort:true,
+                pageSize:10,
+                pageList:[10,20,50],
+                columns:[[
+                    {field:'id',hidden:true},
+                    {field:'cb',checkbox:true},
+                    {field:'userId',title:'userId',width:70},
+                    {field:'userName',title:'用户名',editor:'text',width:80}
+                ]]
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div style="height:290px">
+        <div id="dg"></div>
+    </div>
+</body>
+</html>
