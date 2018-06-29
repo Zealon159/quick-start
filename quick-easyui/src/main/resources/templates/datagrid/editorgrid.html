@@ -20,17 +20,73 @@
                 fitColumns:true,
                 singleSelect:false,
                 multiSort:true,
+                onClickRow:RowClick,
                 pageSize:10,
                 pageList:[10,20,50],
                 columns:[[
                     {field:'id',hidden:true},
                     {field:'cb',checkbox:true},
                     {field:'userId',title:'userId',width:70},
-                    {field:'userName',title:'用户名',editor:'text',width:80}
+                    {field:'userName',title:'用户名',editor:'text',width:80},
+                    {field:'cat',title:'黑足猫',editor:{type:'combobox',options:{
+                                url:'/combox/data',
+                                valueField:'id',
+                                textField:'text'
+                            }},width:80},
+                    {field:'cat_child',title:'小黑足猫',editor:'combobox',width:80},
+                    {field:'h',title:'身高',editor:'text',width:80},
+                    {field:'w',title:'体重',editor:'text',width:80},
+                    {field:'total',title:'总和',editor:'text',width:80}
                 ]]
             });
-
         });
+
+        function f() {
+
+            //在前面的combobox加个事件onSelect:function(data){}在方法里面
+            var row = $('#dg').datagrid('getSelected');
+            var rowIndex = $('#dg').datagrid('getRowIndex',row);//获取行号
+            var target = $('#dg').datagrid('getEditor', {'index':rowIndex,'field':'联动字段'}).target;
+            target.combobox('clear'); //清除原来的数据
+            var url = '获取数据的action带上当前参数'+data.value;
+            target.combobox('reload', url);//联动下拉列表重载
+        }
+        
+        var lastIndex;
+        function RowClick(rowIndex){
+            //单击进行修改
+            $("#dg").datagrid('unselectAll');
+            $("#dg").datagrid('selectRow',rowIndex);
+            if (lastIndex != rowIndex){
+                $('#dg').datagrid('endEdit', lastIndex);
+                $('#dg').datagrid('beginEdit', rowIndex);
+
+                //绑定编辑表格combox列
+                /*
+                var editors = $("#dg").datagrid('getEditors', rowIndex);
+                var catEditor = editors[3];
+                for(var o in catEditor.target){
+                    console.log(o);
+                }
+
+                //alert(catEditor);
+                var currentVal = catEditor.target.combobox('getValue');
+                catEditor.target.combobox({
+                    url:"/combox/data",
+                    valueField:'id',
+                    textField:'text',
+                    onLoadSuccess:function(data){
+                        catEditor.target.combobox('setValue',currentVal);
+                    }
+                });*/
+            }
+            lastIndex = rowIndex;
+        }
+
+        function stopEditRow(){
+            $('#dg').datagrid('endEdit', lastIndex);
+            lastIndex=undefined;
+        }
     </script>
 </head>
 <body>
