@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
     <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript">
         $(function(){
             var url = "/listdata";
@@ -15,7 +16,7 @@
                 autoRowHeight:false,
                 fit:true,
                 remoteSort:true,
-                border:false,
+                border:true,
                 pagination:true,
                 fitColumns:true,
                 singleSelect:false,
@@ -24,33 +25,19 @@
                 pageSize:10,
                 pageList:[10,20,50],
                 columns:[[
-                    {field:'id',hidden:true},
                     {field:'cb',checkbox:true},
                     {field:'userId',title:'userId',width:70},
                     {field:'userName',title:'用户名',editor:'text',width:80},
-                    {field:'cat',title:'黑足猫',editor:{type:'combobox',options:{
-                                url:'/combox/data',
-                                valueField:'id',
-                                textField:'text'
-                            }},width:80},
-                    {field:'cat_child',title:'小黑足猫',editor:'combobox',width:80},
-                    {field:'h',title:'身高',editor:'text',width:80},
-                    {field:'w',title:'体重',editor:'text',width:80},
-                    {field:'total',title:'总和',editor:'text',width:80}
+                    {field:'cat',title:'宠物',editor:{type:'combobox'},width:60},
+                    {field:'cat_child',title:'小宠物',editor:'combobox',width:80},
+                    {field:'h',title:'身高(cm)',editor:'text',width:60},
+                    {field:'w',title:'标准体重([身高-100]×0.9)',editor:'text',width:120},
+                    {field:'birthday',title:'生日',editor:'datebox',width:80},
+                    {field:'id',hidden:true}
                 ]]
             });
         });
 
-        function f() {
-
-            //在前面的combobox加个事件onSelect:function(data){}在方法里面
-            var row = $('#dg').datagrid('getSelected');
-            var rowIndex = $('#dg').datagrid('getRowIndex',row);//获取行号
-            var target = $('#dg').datagrid('getEditor', {'index':rowIndex,'field':'联动字段'}).target;
-            target.combobox('clear'); //清除原来的数据
-            var url = '获取数据的action带上当前参数'+data.value;
-            target.combobox('reload', url);//联动下拉列表重载
-        }
         
         var lastIndex;
         function RowClick(rowIndex){
@@ -61,24 +48,40 @@
                 $('#dg').datagrid('endEdit', lastIndex);
                 $('#dg').datagrid('beginEdit', rowIndex);
 
-                //绑定编辑表格combox列
-                /*
+                //绑定编辑表格列事件
                 var editors = $("#dg").datagrid('getEditors', rowIndex);
-                var catEditor = editors[3];
-                for(var o in catEditor.target){
-                    console.log(o);
-                }
 
-                //alert(catEditor);
-                var currentVal = catEditor.target.combobox('getValue');
+                //级联用例
+                var catEditor = editors[1];
+                var childCatEditor = editors[2];
                 catEditor.target.combobox({
-                    url:"/combox/data",
+                    url:'/combox/data',
                     valueField:'id',
                     textField:'text',
-                    onLoadSuccess:function(data){
-                        catEditor.target.combobox('setValue',currentVal);
+                    onSelect:function (data){
+                        //级联绑定
+                        url = "/combox/datachild/"+data.id;
+                        childCatEditor.target.combobox({
+                            url:url,
+                            valueField:'id',
+                            textField:'text',
+                            onLoadSuccess:function(data){
+                                $(this).combobox("select", data[0].id);
+                            }
+                        });
                     }
-                });*/
+                })
+
+                //自动计算用例
+                var heightEditor = editors[3];
+                var weightEditor = editors[4];
+
+                heightEditor.target.bind('keyup',function () {
+                    var h = heightEditor.target.val();
+                    var w = getWeight(h);
+                    weightEditor.target.val(w.toFixed(2)+" kg");
+                });
+
             }
             lastIndex = rowIndex;
         }
@@ -87,11 +90,67 @@
             $('#dg').datagrid('endEdit', lastIndex);
             lastIndex=undefined;
         }
+
+        //根据身高计算标准体重
+        function getWeight(v){
+            var w = 0;
+            if(!validInteger(v) && v!=""){
+                alert("身高 请输入数字哦！");
+            }else if(v=="") {
+                w = 0;
+            }else{
+                w = parseFloat(v-100)*0.9;
+            }
+            return w;
+        }
+
+        //获得所有修改的数据
+        function saveAll() {
+            var dg = $("#dg");
+            var delRow=JSON.stringify(dg.datagrid('getChanges','deleted'));
+            var newRow=JSON.stringify(dg.datagrid('getChanges','inserted'));
+            var editRow=JSON.stringify(dg.datagrid('getChanges','updated'));
+            $("#info").append("<li>"+new Date()+"</li>");
+        }
+
+        //删除选中行
+        function deleteSelect() {
+            stopEditRow();
+            var rows = $('#dg').datagrid('getSelections');
+            if (!rows || rows.length == 0) {
+                $.messager.alert('提示', '请选择要删除的数据!', 'info');
+                return;
+            }
+            $.messager.confirm('Confirm','您确定要删除选中记录吗?',function(r){if (r){
+                var dg=$('#dg');
+                $.each(rows, function (i, row) {
+                    var index=dg.datagrid('getRowIndex',row);
+                    dg.datagrid('deleteRow',index);
+                });
+            }});
+        }
+
+        //插入新行
+        function insertRow(){
+            stopEditRow();
+            var i=$('#dg').datagrid('getData').rows.length;
+            $('#dg').datagrid('insertRow',{index:i,row:{}});
+        }
     </script>
 </head>
 <body>
-    <div style="height:290px">
-        <div id="dg"></div>
+    <div style="height:320px">
+        <div style="padding: 10px">
+            <a href="#" class="easyui-linkbutton" onclick="insertRow();return false;">insert</a>
+            <a href="#" class="easyui-linkbutton" onclick="saveAll();return false;">save</a>
+            <a href="#" class="easyui-linkbutton" onclick="deleteSelect();return false;">delete</a>
+        </div>
+        <table id="dg"></table>
+    </div>
+    <div>
+        <ul id="info" style="font-size:12px;">
+
+        </ul>
     </div>
 </body>
 </html>
