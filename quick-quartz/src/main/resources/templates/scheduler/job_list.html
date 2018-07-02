@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<title>任务管理</title>
+		<div th:replace="common/common_grid_header"></div>
+	</head>
+	<body>
+		<fieldset class="layui-elem-field">
+		    <div class="layui-field-box">
+		        <div class="layui-inline">
+		            <input id="searchStr" placeholder="关键字" class="layui-input layui-input-sm search_input">
+		        </div>
+		        <div class="layui-inline">
+		            <a class="layui-btn layui-btn-sm" id="btn-search" lay-filter="searchForm"><i class="layui-icon">&#xe615;</i>查询</a>
+		        </div>
+		        <div class="layui-inline">
+		            <a class="layui-btn layui-btn-sm layui-btn-normal" data-type="addUser" id="add-disc"> <i class="layui-icon">&#xe61f;</i>新增</a>
+		        </div>
+		    </div>
+		</fieldset>
+		
+		<div style="height: 100%">
+			<div class="layui-row"> 
+				<table class="layui-hide" id="LAY_datagrid" lay-filter="dg"></table> 
+			</div>
+		</div>
+		
+		<script type="text/html" id="toolBar">
+			<a class="layui-btn layui-btn-xs" lay-event="pause">暂停</a>
+  			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="resume">继续</a>
+  			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+		</script>
+		<script>
+			$(function() {
+				layui.use([ 'element', 'table', 'layer' ], function() {
+					var element = layui.element;
+				});
+				
+				//弹出框
+				$("#add-disc").on("click",function() {
+					layer.open({
+						title : [ '任务信息',
+								'font-size:18px;text-align:center;padding:0' ],
+						type : 2,
+						area : [ '600px', '316px' ],
+						shade : [ 0.8, '#393D49' ],
+						content : [ "/scheduler/add", 'no' ]
+					});
+				})
+			})
+		
+			layui.use('table', function(){
+				var table = layui.table;
+			  	
+				//方法级渲染
+				table.render({
+					id:'datagrid',
+				    elem: '#LAY_datagrid',
+				    url: '/scheduler/listdata',
+				    method:'post',
+				    cols: [[
+				      {field:'jobName', align:'left', title: '任务名称'},
+				      {field:'jobGroup', align:'left', title: '分组',  sort: true},
+				      {field:'jobClassName', align:'center', title: '实现类'},
+				      {field:'cronExpression', align:'center', title: '表达式'},
+				      {field:'triggerState', align:'center', title: '状态'},
+				      {field:'description', align:'center', title: '描述'},
+				      {fixed: 'right', width:200, align:'center', toolbar: '#toolBar'}
+				    ]]
+				    ,page: true
+				    ,height: 450
+				});
+				
+				//监听工具条
+				table.on('tool(dg)', function(obj){
+				    var data = obj.data;
+				    var jobName = data.jobName;
+				    var jobGroupName = data.jobGroup;
+				    var formData = {jobName:jobName,jobGroupName:jobGroupName};
+				    if(obj.event == 'pause'){
+				    	layer.confirm('确定暂停任务吗？', function(index){
+				    		$.post("/scheduler/pause",formData,function(res){
+				    			table.reload('datagrid');
+					        	layer.close(index);
+					        	layer.msg(res.msg);
+				            },"json");
+				    	});
+				    }else if(obj.event == 'resume'){
+				    	layer.confirm('确定继续任务吗？', function(index){
+				    		$.post("/scheduler/resume",formData,function(res){
+				    			table.reload('datagrid');
+					        	layer.close(index);
+					        	layer.msg(res.msg);
+				            },"json");
+				    	});
+				    }else if(obj.event == 'delete'){
+				      	layer.confirm('确定删除任务吗？', function(index){
+				        	//发送删除请求
+				        	$.post("/scheduler/delete",formData,function(res){
+				        		obj.del();
+					        	layer.close(index);
+					        	layer.msg(res.msg);
+				            },"json");
+				      	});
+				    } else if(obj.event == 'edit'){
+				    	layer.open({
+							title : [ '角色信息','font-size:18px;text-align:center;padding:0' ],
+							type : 2,
+							area : [ '600px', '316px' ],
+							shade : [ 0.8, '#393D49' ],
+							content : [ "/org/role/edit/"+data.id, 'no' ]
+						});
+				    }
+				});
+				
+				var active = {
+				    reload: function(){
+				      var searchStr = $('#searchStr');
+				      //执行重载
+				      table.reload('dg_role', {
+				        page: {
+				          curr: 1 //重新从第 1 页开始
+				        }
+				        ,where: {
+				        	params:{
+				        		searchStr: searchStr.val()
+				        	}
+				        }
+				      });
+				    }
+				};  
+				$('#btn-search').on('click', function(){
+				  	var type = $(this).data('type');
+				  	active[type] ? active[type].call(this) : '';
+				});
+				
+				$('#searchStr').keyup(function (event) {
+			        var e = event|| window.event;
+			        if (e.keyCode == "13") {
+			        	var type = "reload";
+						active[type] ? active[type].call(this) : '';
+			        }
+			    });
+			});
+		</script>
+	</body>
+</html>
