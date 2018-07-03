@@ -2,7 +2,6 @@ package cn.zealon.activemq.pubsub.service;
 
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 
@@ -20,5 +19,4 @@ public class SubscribeA {
         System.out.println(Thread.currentThread().getName()+
                 " SubscribeA订阅消息："+text);
     }
-
 }

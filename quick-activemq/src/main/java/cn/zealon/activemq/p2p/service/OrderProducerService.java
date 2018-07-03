@@ -6,6 +6,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 import javax.jms.Destination;
 
+//消息生产者服务类
 @Service
 public class OrderProducerService {
 

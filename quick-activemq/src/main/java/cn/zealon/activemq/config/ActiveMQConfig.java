@@ -7,14 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
-
 import javax.jms.ConnectionFactory;
 import javax.jms.Topic;
 
 /**
  * ActiveMQ 配置
  * @auther: Zealon
- * @Date: 2018-06-20 16:41
+ * @Date: 2018-01-20 16:41
  */
 @Configuration
 @EnableJms
@@ -32,7 +31,6 @@ public class ActiveMQConfig {
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
                                                     DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-        // This provides all boot's default to this factory, including the message converter
 
         //JMS监听者并发线程数范围
         factory.setConcurrency("1-10");
@@ -42,7 +40,7 @@ public class ActiveMQConfig {
         factory.setSessionAcknowledgeMode(2);
 
         configurer.configure(factory, connectionFactory);
-        // You could still override some of Boot's default if necessary.
+
         return factory;
     }
 
@@ -52,7 +50,7 @@ public class ActiveMQConfig {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 
         //JMS监听者并发线程数范围
-        factory.setConcurrency("1-10");
+        factory.setConcurrency("1-1");
         //重连间隔时间
         factory.setRecoveryInterval(1000L);
         //支持发布/订阅
