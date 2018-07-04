@@ -2,7 +2,6 @@ package cn.zealon.activemq.pubsub.service;
 
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
 

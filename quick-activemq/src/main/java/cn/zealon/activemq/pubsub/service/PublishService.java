@@ -5,6 +5,9 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 import javax.jms.Topic;
 
+/**
+ * 发布者服务类
+ */
 @Service
 public class PublishService {
 

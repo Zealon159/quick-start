@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 订单
+ * 生产者控制器类
  */
 @RestController
 @RequestMapping("order")
@@ -32,6 +32,7 @@ public class OrderController {
         for(int i=0;i<messageNum;i++) {
             producerService.sendTextMessage(queue, message+i);
         }
+
         return "ok";
     }
 }
