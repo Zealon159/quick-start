@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
+        function getData() {
+            var url = "getdata";
+            jQuery.ajax({
+                type:"post",
+                url:url,
+                dataType: "application/json",
+                beforeSend: function(request) {
+                    var token = $("#token").val();
+                    request.setRequestHeader("Authorization", token);
+                },success:function(data) {
+                    alert(data);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <input id="token" />
+    <input id="postData" value="postData" onclick="getData()" type="button" />
+
+</body>
+</html>

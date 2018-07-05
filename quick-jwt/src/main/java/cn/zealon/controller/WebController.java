@@ -30,11 +30,12 @@ public class WebController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/dologin")
     public Result login(@RequestParam("username") String username,
                               @RequestParam("password") String password) {
         UserBean userBean = userService.getUser(username);
         if (userBean.getPassword().equals(password)) {
+            Subject subject = SecurityUtils.getSubject();
             return ResultUtil.success(JWTUtil.sign(username, password));
         } else {
             throw new UnauthorizedException();
@@ -45,6 +46,17 @@ public class WebController {
     @GetMapping("/article")
     public Result article() {
         Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            return ResultUtil.success("You are already logged in");
+        } else {
+            return ResultUtil.success("You are guest");
+        }
+    }
+
+    @PostMapping("/getdata")
+    public Result getdata() {
+        Subject subject = SecurityUtils.getSubject();
+        System.out.println(subject.getPrincipal());
         if (subject.isAuthenticated()) {
             return ResultUtil.success("You are already logged in");
         } else {

@@ -4,10 +4,30 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <script type="text/javascript" src="/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
 
+        })
+
+        function login() {
+            var url = "dologin";
+            var userId = $("#userId").val();
+            var pwd = $("#password").val();
+            jQuery.ajax({
+                type:"post",
+                url:url,
+                dataType: "application/json",
+                data:{username:userId, password:pwd},
+                success:function(data) {
+                    
+                }
+            });
+        }
+
+    </script>
 </head>
 <body>
     登录名：<input id="userId"/>  密码：<input id="password" type="password"/><br>
-    <input type="button" value="Login"/>
+    <input type="button" value="Login" onclick="login()"/>
 </body>
 </html>

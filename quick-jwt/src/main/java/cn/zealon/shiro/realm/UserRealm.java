@@ -47,6 +47,7 @@ public class UserRealm extends AuthorizingRealm {
         String token = (String) auth.getCredentials();
         // 解密获得username，用于和数据库进行对比
         String username = JWTUtil.getUsername(token);
+        System.out.println(token+"\n"+username);
         if (username == null) {
             throw new AuthenticationException("token invalid");
         }
