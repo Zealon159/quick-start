@@ -1,0 +1,6 @@
+spring:
+  resources:
+    chain:
+      cache: false
+  thymeleaf:
+    cache: false
