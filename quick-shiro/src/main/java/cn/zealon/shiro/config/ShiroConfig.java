@@ -31,7 +31,7 @@ public class ShiroConfig {
     public SecurityManager securityManager(){
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
-        securityManager.setCacheManager(redisCacheManager());
+        //securityManager.setCacheManager(redisCacheManager());
         securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
@@ -77,7 +77,8 @@ public class ShiroConfig {
 	//授权认证实现配置
 	@Bean
     public ShiroRealm shiroRealm(){
-        ShiroRealm shiroRealm = new ShiroRealm(redisCacheManager());
+        //ShiroRealm shiroRealm = new ShiroRealm(redisCacheManager());
+        ShiroRealm shiroRealm = new ShiroRealm();
         shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         shiroRealm.setAuthorizationCachingEnabled(true);
         shiroRealm.setAuthorizationCacheName("authorizationCache");
@@ -89,7 +90,7 @@ public class ShiroConfig {
 	public SessionManager sessionManager(){
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setSessionDAO(sessionDAO);
-		sessionManager.setCacheManager(redisCacheManager());// 加入缓存管理器  
+		//sessionManager.setCacheManager(redisCacheManager());// 加入缓存管理器
 		return sessionManager;
 	}
 	

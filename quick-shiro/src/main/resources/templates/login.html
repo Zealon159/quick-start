@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+<div class="page">
+    <div class="loginwarrp">
+        <div class="logo">系统登陆</div>
+        <div class="login_form">
+            <form id="Login" name="Login" method="post" action="doLogin">
+                <li class="login-item">
+                    <span>用户名：</span>
+                    <input type="text" id="username" name="username" class="login_input" >
+                    <span id="count-msg" class="error"></span>
+                </li>
+                <li class="login-item">
+                    <span>密　码：</span>
+                    <input type="password" id="password" name="password" class="login_input" >
+                    <span id="password-msg" class="error"></span>
+                </li>
+
+                <li class="login-sub">
+                    <input type="submit" name="Submit" value="登录" />
+                    <input type="reset" name="Reset" value="重置" />
+                </li>
+           </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

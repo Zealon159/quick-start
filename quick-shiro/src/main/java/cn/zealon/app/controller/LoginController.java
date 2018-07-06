@@ -30,16 +30,18 @@ public class LoginController {
 	private LoginServiceImpl loginService;
 	
 	@RequestMapping("/login")
-	public String showLogin(ModelMap map){
-		map.addAttribute("str", null);
+	public String showLogin(){
 		return "login";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/doLogin")
-	public Map<String,Object> doLogin(HttpServletRequest request,HttpServletResponse response,String userId,String pwd,String remenber) throws UnsupportedEncodingException{
-		String url = WebUtils.getSavedRequest(request).getRequestUrl();
-		Map<String,Object> map = loginService.doLogin(userId, pwd);
+	public Map<String,Object> doLogin(HttpServletRequest request,HttpServletResponse response,String username,String password,String remenber) throws UnsupportedEncodingException{
+		String url = "/";
+		if(WebUtils.getSavedRequest(request)!=null){
+			url = WebUtils.getSavedRequest(request).getRequestUrl();
+		}
+		Map<String,Object> map = loginService.doLogin(username, password);
 		if((Boolean)map.get("success")==true){
 			if(url.equals("/") || url.equals("/favicon.ico")){
 				url = "index";
@@ -47,14 +49,14 @@ public class LoginController {
 			map.put("url", url);
 			//登录成功
 			//创建Cookie    
-	        Cookie nameCookie=new Cookie("name",URLEncoder.encode(userId,"utf-8"));    
-	        Cookie pswCookie=new Cookie("psw",pwd);    
+	        Cookie nameCookie=new Cookie("name",URLEncoder.encode(username,"utf-8"));
+	        Cookie pswCookie=new Cookie("psw",password);
 	            
 	        //设置Cookie的父路径    
 	        nameCookie.setPath(request.getContextPath()+"/");    
 	        pswCookie.setPath(request.getContextPath()+"/");    
 	        logger.debug(remenber+"--------");
-	        if(remenber.equals("1")){//保存Cookie的时间长度，单位为秒  
+	        if(remenber!=null && remenber.equals("1")){//保存Cookie的时间长度，单位为秒
 	        	nameCookie.setMaxAge(7*24*60*60);
 	            pswCookie.setMaxAge(7*24*60*60);
 	        }else{

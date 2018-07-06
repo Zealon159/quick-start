@@ -6,17 +6,9 @@ import cn.zealon.org.entity.OrgUser;
 
 @Mapper
 public interface OrgUserMapper {
-	
-    int deleteByPrimaryKey(String id);
 
     int insert(OrgUser record);
-
-    OrgUser selectByPrimaryKey(String id);
-
-    OrgUser getUserInfoByUserid(@Param("userId") String userId);
-
-    int updateByPrimaryKey(OrgUser record);
     
-    OrgUser selectByUserId(String userId);
+    OrgUser selectByUserId(@Param("userId") String userId);
     
 }

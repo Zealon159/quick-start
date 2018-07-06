@@ -60,7 +60,7 @@ public class OrgUserServiceImpl implements OrgUserService {
 	 * 根据用户id获取用户信息
 	 */
 	public OrgUser getUserInfoByUserid(String userId){
-		OrgUser user = orgUserMapper.getUserInfoByUserid(userId);
+		OrgUser user = orgUserMapper.selectByUserId(userId);
 		return user;
 	}
 }

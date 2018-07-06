@@ -39,13 +39,12 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Autowired
 	private RedisService redisService;
 
-	public ShiroRealm(CacheManager cacheManager) {
-        super(cacheManager);
+	public ShiroRealm() {
+        //super(cacheManager);
     }
 	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		// TODO Auto-generated method stub
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
 		String userid = (String) upToken.getPrincipal(); // 得到用户名
 		String password = new String((char[]) upToken.getCredentials()); // 得到密码
