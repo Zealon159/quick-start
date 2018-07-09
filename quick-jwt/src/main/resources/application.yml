@@ -1,0 +1,14 @@
+# 参考
+# https://github.com/Smith-Cruise/Spring-Boot-Shiro
+# https://www.cnblogs.com/xiekeli/p/5607107.html
+audience:
+  clientId: 21d373cade4e8098f6bcd4632627b4f6
+  base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
+  name: restapi
+  expiresSecond: 172800
+
+spring:
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    mode: LEGACYHTML5
