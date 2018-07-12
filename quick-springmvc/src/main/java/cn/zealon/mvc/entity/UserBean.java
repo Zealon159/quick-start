@@ -1,5 +1,7 @@
 package cn.zealon.mvc.entity;
 
+import java.util.Date;
+
 /**
  * @Author: zealon
  * @Version: 1.0
@@ -7,6 +9,7 @@ package cn.zealon.mvc.entity;
 public class UserBean {
     private String userId;
     private String userName;
+    private Date created;
 
     public String getUserId() {
         return userId;
@@ -22,6 +25,14 @@ public class UserBean {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     @Override

@@ -6,16 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Author: zealon
  * @Version: 1.0
  */
 @Controller
-public class WebController {
+public class WebController extends BaseController {
 
     @ResponseBody
     @GetMapping("index")
@@ -28,12 +27,19 @@ public class WebController {
     }
 
     @ResponseBody
-    //@RequestMapping
     @RequestMapping(name = "save",method = RequestMethod.POST,consumes = "application/json")
-    //@PostMapping(name = "save",consumes = "application/json",path = "save")
     public Object save(@RequestBody UserBean userBean){
-        System.out.println(userBean.toString());
-        return "ok";
+        return userBean;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("test")
+    public Object test(String userId,String userName){
+        Map<String,Object> params = new HashMap<>();
+        params.put("userId",userId);
+        params.put("userName",userName);
+        return params;
     }
 
     //@ResponseBody
@@ -44,5 +50,14 @@ public class WebController {
         userBean.setUserName("李白");
         HttpStatus status = HttpStatus.NOT_FOUND;
         return new ResponseEntity<>(userBean,status);
+    }
+
+    @ResponseBody
+    @RequestMapping("datetime")
+    public Object testDatetime(@RequestBody UserBean userBean){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        System.out.println(userBean.getCreated().toString());
+        System.out.println(simpleDateFormat.format(userBean.getCreated()).toString());
+        return userBean;
     }
 }
