@@ -30,24 +30,28 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- zkClient 客户端 -->
+
+
         <!-- zookeeper curator 客户端 -->
         <dependency>
             <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-            <version>2.12.0</version>
+            <artifactId>curator-client</artifactId>
+            <version>2.9.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-            <version>2.12.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>curator-framework</artifactId>
+            <version>2.9.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.google.guava</groupId>
