@@ -38,17 +38,17 @@ public class CuratorUtil {
         //create(client,"/db_config/dev","{\"username\":\"root\",\"password\":\"pass_dev\"}");
         //create(client,"/db_config/pro","{\"username\":\"root\",\"password\":\"pass_pro\"}");
 
-        //delete(client,"/db_config/dev");
+        deleteAll(client,"/dubbo");
 
         //System.out.println(getNodeText(client,"/db_config/pro"));
 
-        nodeCache(client,"/db_config/pro");
+        /*nodeCache(client,"/db_config/pro");
         modify(client,"/db_config/pro","aaaa");
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
