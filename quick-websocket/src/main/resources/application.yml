@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  ## thymeleaf \u914D\u7F6E
+  thymeleaf:
+    encoding: UTF-8
+    cache: false
+    mode: LEGACYHTML5
