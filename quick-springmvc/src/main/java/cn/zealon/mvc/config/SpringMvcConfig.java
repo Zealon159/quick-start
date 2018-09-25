@@ -24,19 +24,4 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
         //super.addInterceptors(registry);
     }
 
-
-
-    /*@Bean
-    public FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean(){
-        FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
-        Set set = new HashSet();
-        set.add(dateConvert());
-        factoryBean.setConverters(set);
-        return factoryBean;
-    }
-
-    @Bean
-    public DateConvert dateConvert(){
-        return new DateConvert();
-    }*/
 }
