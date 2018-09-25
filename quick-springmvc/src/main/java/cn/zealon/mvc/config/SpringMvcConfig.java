@@ -1,20 +1,32 @@
 package cn.zealon.mvc.config;
 
+import cn.zealon.mvc.interceptor.DefaultInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @auther: Zealon
- * @Date: 2018-07-12 17:27
-
 @Configuration
-public class SpringMvcConfig {
+public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
+    @Autowired
+    private DefaultInterceptor defaultInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(defaultInterceptor).addPathPatterns("/**");
+        //super.addInterceptors(registry);
+    }
+
+
+
+    /*@Bean
     public FormattingConversionServiceFactoryBean formattingConversionServiceFactoryBean(){
         FormattingConversionServiceFactoryBean factoryBean = new FormattingConversionServiceFactoryBean();
         Set set = new HashSet();
@@ -26,6 +38,5 @@ public class SpringMvcConfig {
     @Bean
     public DateConvert dateConvert(){
         return new DateConvert();
-    }
+    }*/
 }
- */

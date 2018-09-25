@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -18,7 +18,9 @@ public class WebController extends BaseController {
 
     @ResponseBody
     @GetMapping("index")
-    public Object index(){
+    public Object index(HttpServletRequest request){
+        request.getUserPrincipal();
+
         List<Date> list = new ArrayList<>();
         for(int i=0;i<5;i++){
             list.add(i,new Date());
