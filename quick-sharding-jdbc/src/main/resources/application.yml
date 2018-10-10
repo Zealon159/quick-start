@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+
+#sharding:
+#  jdbc:
+#    datasources:
+#      names: ds_master,ds_slave_0
+#      ds_master:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://localhost:3306/ds_master?useUnicode=true&characterEncoding=utf-8&useSSL=true
+#        username: root
+#        password: pass123
+#      ds_slave_0:
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://localhost:3306/ds_slave_0?useUnicode=true&characterEncoding=utf-8&useSSL=true
+#        username: root
+#        password: pass123
+# #   config:
+#      masterslave:
+#        name: dataSource
+#        master-data-source-name: ds_master
+#        slave-data-source-names: ds_slave_0
+#        load-balance-algorithm-type: round_robin
+sharding:
+  jdbc:
+    # \u914D\u7F6E\u771F\u5B9E\u6570\u636E\u6E90
+    datasource:
+      names: ds_master,ds_slave_0,ds_slave_1
+      # \u914D\u7F6E\u4E3B\u5E93
+      ds_master_0:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/ds_master?useUnicode=true&characterEncoding=utf-8&useSSL=true
+        username: root
+        password: pass123
+        maxPoolSize: 20
+      # \u914D\u7F6E\u7B2C\u4E00\u4E2A\u4ECE\u5E93
+      ds_slave_0:
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/ds_slave_0?useUnicode=true&characterEncoding=utf-8&useSSL=true
+        username: username
+        password: pass123
+        maxPoolSize: 20
+      # \u914D\u7F6E\u7B2C\u4E8C\u4E2A\u4ECE\u5E93
+      ds_slave_1:
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/ds_slave_1?useUnicode=true&characterEncoding=utf-8&useSSL=true
+        username: username
+        password: pass123
+        maxPoolSize: 20
+    # \u914D\u7F6E\u8BFB\u5199\u5206\u79BB
+    config:
+      masterslave:
+        # \u914D\u7F6E\u4ECE\u5E93\u9009\u62E9\u7B56\u7565\uFF0C\u63D0\u4F9B\u8F6E\u8BE2\u4E0E\u968F\u673A\uFF0C\u8FD9\u91CC\u9009\u62E9\u7528\u8F6E\u8BE2
+        load-balance-algorithm-type: round_robin
+        name: ds_m_1_s_2
+        master-data-source-name: ds_master
+        slave-data-source-names: ds_slave_0,ds_slave_1
+      sharding:
+        props:
+          # \u5F00\u542FSQL\u663E\u793A\uFF0C\u9ED8\u8BA4\u503C: false\uFF0C\u6CE8\u610F\uFF1A\u4EC5\u914D\u7F6E\u8BFB\u5199\u5206\u79BB\u65F6\u4E0D\u4F1A\u6253\u5370\u65E5\u5FD7\uFF01\uFF01\uFF01
+          sql:
+            show: true
