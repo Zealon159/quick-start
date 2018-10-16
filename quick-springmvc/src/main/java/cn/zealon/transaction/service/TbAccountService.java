@@ -6,6 +6,7 @@ import cn.zealon.transaction.entity.TbAccount;
 import cn.zealon.transaction.entity.TbCar;
 import cn.zealon.transaction.exception.NotSufficientFundsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @Date: 2018-07-24 10:57
  */
 @Service
+@Scope("")
 public class TbAccountService {
 
     @Autowired
