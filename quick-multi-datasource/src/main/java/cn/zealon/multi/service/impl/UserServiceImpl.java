@@ -45,10 +45,12 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		String masterDBResult = "masterDBResult:"+JSON.toJSONString(selectAllByMasterDB());
 		
-		//切换数据源查询
+		// 切换数据源查询
 		DataSourceContextHolder.setTargetDataSource(DataSourceEnum.OTHER);
 		String otherDBResult = "otherDBResult:"+JSON.toJSONString(selectAllByOtherDB());
-		
+
+		// 代码中中使用，必须调用移除，不然导致默认数据源获取不准确
+		DataSourceContextHolder.resetDefaultDataSource();
 		return masterDBResult+"<hr>"+otherDBResult;
 	}
 

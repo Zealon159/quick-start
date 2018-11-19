@@ -10,8 +10,8 @@ public class RoutingDataSource extends AbstractRoutingDataSource{
 
 	@Override
 	protected Object determineCurrentLookupKey() {
-		// TODO Auto-generated method stub
-		return DataSourceContextHolder.getTargetDataSource();
+		DataSourceEnum dataSource = DataSourceContextHolder.getTargetDataSource();
+		return dataSource;
 	}
 
 }
