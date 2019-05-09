@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>datagrid</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //初始化表头
+            $("#dg").datagrid({
+                method:'post',
+                url:"/indexes/cat",
+                pagination:false,
+                height:'auto',
+                striped:true,
+                fitColumns:true,
+                allowCellWrap:true,
+                nowrap:false,
+                columns:[
+                    [
+                        {field:'uuid',title:'uuid'},
+                        {field:'health',title:'health'},
+                        {field:'index',title:'index',width:100},
+                        {field:'status',title:'status'},
+                        {field:'pri',title:'pri'},
+                        {field:'rep',title:'rep'},
+                        {field:'docs.count',title:'docs.count'},
+                        {field:'docs.deleted',title:'docs.deleted'},
+                        {field:'store.size',title:'store.size'},
+                        {field:'pri.store.size',title:'pri.store.size'},
+                        {field:'examineStatus',title:'操作',formatter:fmtAction,width:100,align:'center',halign:'center'}
+                    ]
+                ],
+                onLoadSuccess: function (data) {
+
+                }
+
+            });
+
+        });
+
+        //格式化列
+        function fmtAction(v,r) {
+            var editBtn = "<a href=javascript:alert('编辑"+r.id+"') >Edit</a>";
+            var deleteBtn = "<a href=javascript:alert('删除"+r.id+"') >Delete</a>";
+            return editBtn+" | "+deleteBtn;
+        }
+
+    </script>
+</head>
+<body>
+    <div style="padding: 10px">
+        索引列表
+    </div>
+    <table id="dg" style="width:100%" ></table>
+
+</body>
+</html>

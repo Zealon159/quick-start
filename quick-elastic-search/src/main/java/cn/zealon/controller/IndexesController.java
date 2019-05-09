@@ -3,6 +3,7 @@ package cn.zealon.controller;
 import cn.zealon.repository.IndexesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +19,11 @@ public class IndexesController {
     @Autowired
     private IndexesRepository indexesRepository;
 
+    @RequestMapping("/create-page")
+    public String createPage(){
+        return "indexes/create";
+    }
+
     @RequestMapping("/create")
     public @ResponseBody Object createIndex(String index, String type){
         return indexesRepository.createIndex(index,index,type).getJsonString();
@@ -26,6 +32,11 @@ public class IndexesController {
     @RequestMapping("/delete")
     public @ResponseBody Object deleteIndex(String index){
         return indexesRepository.deleteIndex(index).getJsonString();
+    }
+
+    @GetMapping("/list")
+    public String list(){
+        return "indexes/list";
     }
 
     @RequestMapping("/cat")

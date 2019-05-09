@@ -1,0 +1,13 @@
+
+.table{
+    width: 100%;
+    background-color: #bcbcbc;
+}
+
+.table tr {
+    background-color: #ffffff;
+}
+
+.table tr td{
+    font-size: 12px;
+}

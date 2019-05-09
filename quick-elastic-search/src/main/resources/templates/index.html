@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>elasticsearch 用例</title>
+        <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+        <link rel="stylesheet" type="text/css" href="/css/easyui-accordion.css" />
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                //初始化js代码
+                //$("#centerFrame").attr("src","r?wf_num=P_DCM_001");
+                InitLeftMenu();
+
+            });
+
+
+            function extAll(){
+                $('#tree').tree('expandAll');
+            }
+
+
+            function openurl(node){
+                if($('#tree').tree('isLeaf',node)==true){
+                    var url=node.ItemUrl;
+                    var text=node.text;
+                    var spos=text.lastIndexOf("(");
+                    if(spos!=-1){
+                        text=text.substring(0,spos);
+                    }
+
+                    if(node.OpenType=="New"){
+                        OpenUrl(url);
+                    }else if(node.OpenType=="top"){
+                        top.location.href=url;
+                    }else{
+                        $('#centerFrame').attr("src",url);
+                    }
+                }else{
+                    $('#tree').tree('toggle',node.target);
+                }
+            }
+
+            //初始化左侧
+            function InitLeftMenu() {
+                $("#nav").accordion({animate:false});//为id为nav的div增加手风琴效果，并去除动态滑动效果
+                jQuery.ajax({
+                    type:"post",
+                    async:false,
+                    url:"menu/getTreeData",
+                    dataType: "json",
+                    data:{treeid:"menu"},
+                    success:function(data) {
+                        jsonStr = window["eval"]("(" + data.Status + ")");
+                        $.each(data.menus,function(i,n){
+                            var menulist ='';
+                            menulist +='<ul>';
+                            $.each(n.menus, function(j, o) {
+                                menulist += '<li><div><a ref="'+o.menuid+'" href="#" rel="' + o.url + '" ><span class="icon '+o.icon+'" >　　</span><span style="color:black" class="nav">' + o.menuname + '</span></a></div></li> ';
+                            })
+                            menulist += '</ul>';
+
+                            $('#nav').accordion('add', {
+                                title: n.menuname,
+                                content: menulist,
+                                iconCls: 'icon ' + n.icon
+                            });
+                        });
+                    }
+                });
+
+
+                $('.easyui-accordion li a').click(function(){//当单击菜单某个选项时，在右边出现对用的内容
+                    var tabTitle = $(this).children('.nav').text();//获取超链里span中的内容作为新打开tab的标题
+
+                    var url = $(this).attr("rel");
+                    var menuid = $(this).attr("ref");//获取超链接属性中ref中的内容
+
+                    //addTab(tabTitle,url,icon);//增加tab
+                    $('.easyui-accordion li div').removeClass("selected");
+                    $(this).parent().addClass("selected");
+
+                    //更换链接及文字
+                    //var seltab = $('#tabs').tabs('getSelected');
+                    //$('#tabs').tabs('update', {tab: seltab,iconCls:'icon-save',options: {title:tabTitle}});
+                    $('#centerFrame').attr("src",url);
+
+                }).hover(function(){
+                    $(this).parent().addClass("hover");
+                },function(){
+                    $(this).parent().removeClass("hover");
+                });
+
+                //选中第一个
+                $('#nav').accordion('select', 0);
+            }
+        </script>
+    </head>
+    <body>
+        <div class="easyui-layout" id="panel" fit="true" style="width:100%;">
+            <div data-options="region:'north',split:false" border="false" style="height:65px;overflow:hidden">
+
+                <table width=100% height="65" border=0 cellpadding=0 cellspacing=0 background="img/3.png" style=" background-position-y: -800px">
+                    <tr>
+                        <td style='padding-left:35px'>
+                            <h1 style="color: #E0ECFF">elasticsearch jest-api</h1>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div data-options="region:'west',split:true" title="系统菜单" style="width:180px;" >
+                <!--  导航内容 -->
+                <div id="nav" class="easyui-accordion" fit="true" border="false"></div>
+                <!--<ul class="easyui-tree" id="tree" data-options="url:'navtree?wf_num=T_S005_001',method:'get',animate:true,lines:true,onLoadSuccess:extAll,onSelect:openurl" ></ul>-->
+            </div>
+
+            <div region="center" border="true" fit="false" >
+
+                <iframe frameborder="0" width="100%" height="99%" id="centerFrame" name="centerFrame" scroll="no" src="about:blank"></iframe>
+
+            </div>
+        </div><div id="win"></div>
+
+
+    </body>
+</html>
