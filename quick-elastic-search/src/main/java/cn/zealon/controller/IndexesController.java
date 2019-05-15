@@ -25,7 +25,8 @@ public class IndexesController {
     }
 
     @RequestMapping("/create")
-    public @ResponseBody Object createIndex(String index, String type){
+    public @ResponseBody Object createIndex(String index){
+        String type = "book";
         return indexesRepository.createIndex(index,index,type).getJsonString();
     }
 

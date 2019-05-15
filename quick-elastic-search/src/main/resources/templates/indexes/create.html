@@ -11,6 +11,18 @@
             $(function(){
 
             });
+
+            function create() {
+                var indexName = $("#indexName").val();
+                var url = "/indexes/create";
+                var formData = {
+                    index: indexName
+                }
+                $.post( url, formData, function( data ) {
+                    console.log(data)
+                    $("#msg").html(data);
+                }, "json");
+            }
         </script>
     </head>
     <body>
@@ -21,15 +33,17 @@
             <tr>
                 <td style="width: 15%">索引名称</td>
                 <td style="width: 85%">
-                    <input id="indexName" name="indexName" class="textbox" />
+                    <input id="indexName" name="indexName" class="easyui-textbox" />
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <input type="button" class="textbox-button" value="保存"/>
+                    <input type="button" onclick="create()" class="textbox-button" value="保存"/>
                 </td>
             </tr>
         </table>
+
+        <div id="msg"></div>
     </body>
 </html>

@@ -23,9 +23,10 @@ public class MenuServiceImpl implements MenuService {
         sb.append("{\"menus\":[");
 
         // 索引
-        sb.append("{\"menuid\":\"1\",\"icon\":\"\",\"menuname\":\"索引\",\"menus\":[");
+        sb.append("{\"menuid\":\"1\",\"icon\":\"\",\"menuname\":\"索引/文档\",\"menus\":[");
         sb.append("{\"menuid\":\"3\",\"menuname\":\"创建索引\",\"icon\":\"icon-add\",\"url\":\"/indexes/create-page\"}," );
-        sb.append("{\"menuid\":\"4\",\"menuname\":\"索引列表\",\"icon\":\"icon-list\",\"url\":\"/indexes/list\"}");
+        sb.append("{\"menuid\":\"4\",\"menuname\":\"索引列表\",\"icon\":\"icon-list\",\"url\":\"/indexes/list\"},");
+        sb.append("{\"menuid\":\"5\",\"menuname\":\"创建文档\",\"icon\":\"icon-list\",\"url\":\"/doc/create-page\"}");
         sb.append("]}");
 
         // 基础查询
