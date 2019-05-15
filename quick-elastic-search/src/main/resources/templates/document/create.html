@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+        <link rel="stylesheet" type="text/css" href="/css/common.css" />
+        <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                // init Index
+                var url = "/indexes/cat";
+                $('#index').combobox({
+                    url:url,
+                    valueField:'index',
+                    textField:'index',
+                    onLoadSuccess:function(data){
+                        $(this).combobox("select", data[0].index);
+                    }
+                });
+            });
+
+            function create() {
+                var index = $("#index").combobox("getValue");
+                var categoryId = $("#categoryId").val();
+                var bookId = $("#bookId").val();
+                var bookName = $("#bookName").val();
+                var introduction = $("#introduction").val();
+                var bookStatus = $("#bookStatus").val();
+                var wordCount = $("#wordCount").val();
+                var bookPrice = $("#bookPrice").val();
+
+                var url = "/doc/create";
+                var formData = {
+                    index: index,
+                    categoryId: categoryId,
+                    bookId: bookId,
+                    bookName: bookName,
+                    introduction: introduction,
+                    bookStatus: bookStatus,
+                    wordCount: wordCount,
+                    bookPrice: bookPrice
+                }
+                $.post( url, formData, function( data ) {
+                    console.log(data)
+                    $("#msg").html(data.items.toString());
+                }, "json");
+            }
+        </script>
+    </head>
+    <body>
+        <div style="padding: 10px">
+            创建文档
+        </div>
+        <table class="table" cellspacing="1" cellpadding="4">
+            <tr>
+                <td style="width: 15%">Index</td>
+                <td style="width: 85%">
+                    <select class="easyui-combobox" name="index" id="index" style="width:200px"></select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">所属分类</td>
+                <td style="width: 85%">
+                    <select name="categoryId" id="categoryId">
+                        <option value="1">都市传说</option>
+                        <option value="2">悬疑恐怖</option>
+                        <option value="3">总裁豪门</option>
+                        <option value="4">玄幻武侠</option>
+                        <option value="5">都市言情</option>
+                        <option value="6">穿越架空</option>
+                        <option value="7">古代言情</option>
+                        <option value="8">官商人文</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">图书ID</td>
+                <td style="width: 85%">
+                    <input id="bookId" name="bookId" class="easyui-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">图书名称</td>
+                <td style="width: 85%">
+                    <input id="bookName" name="bookName" class="easyui-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">图书简介</td>
+                <td style="width: 85%">
+                    <input id="introduction" name="introduction" class="easyui-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">图书状态</td>
+                <td style="width: 85%">
+                    <select name="bookStatus" id="bookStatus">
+                        <option value="1">连载</option>
+                        <option value="2">暂停</option>
+                        <option value="3">完结</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">字数</td>
+                <td style="width: 85%">
+                    <input id="wordCount" name="wordCount" class="easyui-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%">价格</td>
+                <td style="width: 85%">
+                    <input id="bookPrice" name="bookPrice" class="easyui-textbox" />
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <input onclick="create()" type="button" class="textbox-button" value="保存"/>
+                </td>
+            </tr>
+        </table>
+
+        <div id="msg"></div>
+    </body>
+</html>
