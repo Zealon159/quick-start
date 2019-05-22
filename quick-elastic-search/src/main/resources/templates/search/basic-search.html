@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础查询</title>
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/gray/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="/js/easyui/themes/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/css/common.css" />
+    <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // 检索文档
+            $("#btnSearch_1").click(function(){
+                var id = $("#id_1").val();
+                var url = "/basic/document/"+id;
+                $.get(url,function(data){
+                    $("#result").val(data);
+                });
+            });
+
+            // 全文搜索
+            $("#btnSearch_2").click(function(){
+                var key = $("#key").val();
+                var url = "/basic/search";
+                $.post(url,{bookName:key,searchMode:"match"},function(data){
+                    $("#result").val(data);
+                });
+            });
+
+            // 短语搜索
+            $("#btnSearch_3").click(function(){
+                var key = $("#key_3").val();
+                var url = "/basic/search";
+                $.post(url,{bookName:key,searchMode:"match_phrase"},function(data){
+                    $("#result").val(data);
+                });
+            });
+
+            // 高亮搜索
+            $("#btnSearch_4").click(function(){
+                var key = $("#key_4").val();
+                var url = "/basic/search";
+                $.post(url,{bookName:key,searchMode:"match",highlight:1},function(data){
+                    $("#result").val(data);
+                });
+            });
+
+            // 高亮搜索
+            $("#btnSearch_5").click(function(){
+                var fieldName = $("#key_5").val();
+                var url = "/basic/search/aggs";
+                $.post(url,{fieldName:fieldName},function(data){
+                    $("#result").val(data);
+                });
+            });
+
+        });
+    </script>
+</head>
+    <body>
+        <div id="tt" class="easyui-tabs" style="width:100%;height:245px;">
+            <div title="检索文档" style="padding:20px;">
+                ID：<input id="id_1" class="easyui-textbox" style="width: 200px;"/>
+                <a id="btnSearch_1" class="easyui-linkbutton" iconCls="icon-search" >Search</a>
+                （可在创建文档返回结果得到ID）
+            </div>
+            <div title="全文搜索" style="padding:20px;display:none;">
+                图书名称：<input id="key" class="easyui-textbox" style="width: 200px;"/> &nbsp;
+                <a id="btnSearch_2" class="easyui-linkbutton" iconCls="icon-search" >Search</a>
+            </div>
+            <div title="短语搜索" style="padding:20px;display:none;">
+                图书名称：<input id="key_3" class="easyui-textbox" style="width: 200px;"/> &nbsp;
+                <a id="btnSearch_3" class="easyui-linkbutton" iconCls="icon-search" >Search</a>
+            </div>
+            <div title="高亮搜索" style="padding:20px;display:none;">
+                图书名称：<input id="key_4" class="easyui-textbox" style="width: 200px;"/> &nbsp;
+                <a id="btnSearch_4" class="easyui-linkbutton" iconCls="icon-search" >Search</a>
+            </div>
+            <div title="分析" style="padding:20px;display:none;">
+                图书名称：<input id="key_5" class="easyui-textbox" value="categoryId" style="width: 200px;"/> &nbsp;
+                <a id="btnSearch_5" class="easyui-linkbutton" iconCls="icon-search" >Search</a>
+            </div>
+        </div>
+        <div style="margin-top: 10px">
+            Result：
+            <textarea id="result" style="width: 100%; height: 285px; color: #92aab4; background-color: #171717; font-size: 13px; padding: 10px"></textarea>
+        </div>
+    </body>
+</html>

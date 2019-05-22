@@ -1,5 +1,6 @@
 package cn.zealon.controller;
 
+import cn.zealon.common.Constant;
 import cn.zealon.domain.Book;
 import cn.zealon.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,13 @@ public class DocumentController {
     private DocumentRepository documentRepository;
 
     @RequestMapping("/create-page")
-    public Object createPage(){
+    public String createPage(){
         return "document/create";
     }
 
     @RequestMapping("/create")
     @ResponseBody
-    public Object createDocument(String index, Book book){
-        String type = "book";
-        return documentRepository.createDocument(index,type,book).getJsonString();
+    public String createDocument(String index, Book book){
+        return documentRepository.createDocument(index,Constant.DEFAULT_TYPE,book).getJsonString();
     }
 }

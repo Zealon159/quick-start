@@ -29,10 +29,10 @@ public class MenuServiceImpl implements MenuService {
         sb.append("{\"menuid\":\"5\",\"menuname\":\"创建文档\",\"icon\":\"icon-list\",\"url\":\"/doc/create-page\"}");
         sb.append("]}");
 
-        // 基础查询
-        sb.append(",{\"menuid\":\"6\",\"icon\":\"\",\"menuname\":\"基础查询\",");
-        sb.append("\"menus\":[{\"menuid\":\"7\",\"menuname\":\"DataGrid\",\"icon\":\"icon-grid\",\"url\":\"/datagrid\"},");
-        sb.append("{\"menuid\":\"8\",\"menuname\":\"EditorGrid\",\"icon\":\"icon-pkg\",\"url\":\"/editorgrid\"}" );
+        // 查询
+        sb.append(",{\"menuid\":\"6\",\"icon\":\"\",\"menuname\":\"查询\",");
+        sb.append("\"menus\":[{\"menuid\":\"7\",\"menuname\":\"基础查询\",\"icon\":\"icon-grid\",\"url\":\"/basic/search-page\"},");
+        sb.append("{\"menuid\":\"8\",\"menuname\":\"高级查询\",\"icon\":\"icon-search\",\"url\":\"/advanced/search-page\"}" );
 
         sb.append("]}");
 

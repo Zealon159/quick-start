@@ -43,9 +43,8 @@
                     bookPrice: bookPrice
                 }
                 $.post( url, formData, function( data ) {
-                    console.log(data)
-                    $("#msg").html(data.items.toString());
-                }, "json");
+                    $("#msg").html(data);
+                });
             }
         </script>
     </head>

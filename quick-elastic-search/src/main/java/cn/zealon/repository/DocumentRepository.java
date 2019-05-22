@@ -65,7 +65,7 @@ public class DocumentRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result ;
+        return result;
 
     }
 
@@ -74,15 +74,22 @@ public class DocumentRepository {
         JestResult result = null ;
         try {
             result = jestClient.execute(get);
-            T o = (T) result.getSourceAsObject(object.getClass());
-            for (Method method : o.getClass().getMethods()) {
-                System.out.println("getDocument == " + method.getName());
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return result;
+    }
 
+    public JestResult getDocuments(String index, String type) {
+
+        Get get = new Get.Builder(index,"").type(type).build();
+        JestResult result = null ;
+        try {
+            result = jestClient.execute(get);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
