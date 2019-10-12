@@ -1,11 +1,13 @@
 package cn.zealon.rabbit.p2p;
 
+import cn.zealon.rabbit.config.AMQPConfig;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,20 +30,21 @@ public class Producer {
     @Autowired
     AmqpAdmin amqpAdmin;
 
+    @InitBinder
+    public void init(){
+        System.out.println("init...");
+    }
+
     @RequestMapping("/sendMsg")
     public String sendMsg(String msg){
         // 命名
-        String destination = "myQueue";
+        String destination = AMQPConfig.BOOK_SHELF_QUEUE;
         String exchange = "exchange.direct";
         String routingKey = "direct.queue";
 
         // 创建交换器
         DirectExchange directExchange = new DirectExchange(exchange);
         amqpAdmin.declareExchange( directExchange );
-
-        // 创建队列
-        /*Queue queue = new Queue(destination,true);
-        amqpAdmin.declareQueue(queue);*/
 
         // 创建绑定器
         Binding binding = new Binding(destination, Binding.DestinationType.QUEUE,
